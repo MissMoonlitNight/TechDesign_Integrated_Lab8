@@ -109,7 +109,7 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        /*
+        
 
         // Выдача опыта 
         LevelSystem lvl = FindObjectOfType<LevelSystem>();
@@ -124,7 +124,7 @@ public class QuestManager : MonoBehaviour
             TalentManager.Instance.availablePoints += quest.rewardTalentPoints;
             Debug.Log($"[QuestManager] Получено {quest.rewardTalentPoints} очк. талантов");
         }
-        */
+        
 
         Debug.Log($"[QuestManager] Квест выполнен: {quest.questName}");
     }
