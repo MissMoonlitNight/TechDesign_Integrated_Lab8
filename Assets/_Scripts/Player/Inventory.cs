@@ -5,19 +5,30 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public List<InventorySlot> slots = new List<InventorySlot>();
+
+    // Событие для обновления UI
     public event Action OnInventoryChanged;
+
+    // Событие для квестов
     public event Action<ItemData, int> OnItemAdded;
 
-    [Header("Test Resources (для старта)")]
+    [Header("Стартовые ресурсы")]
     public ItemData wood;
     public ItemData stone;
     public ItemData stick;
 
+    [Header("Стартовое оружие")]
+    public ItemData pistol;
+
     void Start()
     {
+        // Выдаем стартовые ресурсы
         if (wood) AddItem(wood, 3);
         if (stone) AddItem(stone, 5);
         if (stick) AddItem(stick, 2);
+
+        // Выдаем стартовый пистолет
+        if (pistol) AddItem(pistol, 1);
 
         OnInventoryChanged?.Invoke();
     }
@@ -46,8 +57,12 @@ public class Inventory : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    public void AddItem(ItemData item, int amount)
+    public void AddItem(ItemData item, int amountToAdd)
     {
+        Debug.Log($"[Inventory] Попытка добавить предмет: {item.itemName} x{amountToAdd}");
+
+        int amount = amountToAdd; 
+
         foreach (var slot in slots)
         {
             if (slot.item == item && slot.amount < item.maxStack)
@@ -66,7 +81,10 @@ public class Inventory : MonoBehaviour
             slots.Add(new InventorySlot(item, add));
             amount -= add;
         }
+
         OnInventoryChanged?.Invoke();
-        OnItemAdded?.Invoke(item, amount);
+
+        OnItemAdded?.Invoke(item, amountToAdd);
+        Debug.Log($"[Inventory] Событие OnItemAdded вызвано для {item.itemName} x{amountToAdd}");
     }
 }

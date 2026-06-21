@@ -6,7 +6,15 @@ public class DialogueResponse
     public string responseText;
     public DialogueNode nextNode;
 
-    public QuestData questToStart; 
+
+    public ItemData requiredItem;
+    public int requiredItemAmount = 1;
+
+   
+    public QuestData requiredCompletedQuest;
+
+    
+    public QuestData questToStart;
 }
 
 [CreateAssetMenu(fileName = "NewDialogueNode", menuName = "Dialogue/DialogueNode")]

@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Fireball
   icon: {fileID: 21300000, guid: 0d6b13c0df8d3b04ab94795f68fc3ab3, type: 3}
   cooldown: 2
-  manaCost: 15
+  manaCost: 40
   damage: 30
   range: 20
   effectPrefab: {fileID: 3179850883726051601, guid: c3c4ace5dcf5d424a88f1e6e1e94fd1f, type: 3}

@@ -6,6 +6,16 @@ public class CraftingSystem : MonoBehaviour
     public Inventory playerInventory;
     public List<RecipeData> availableRecipes; // все рецепты
 
+    // Словарь для связи результата крафта с WeaponData
+    [System.Serializable]
+    public class WeaponCraftResult
+    {
+        public ItemData resultItem;
+        public WeaponData weaponData;
+    }
+
+    public List<WeaponCraftResult> weaponResults = new List<WeaponCraftResult>();
+
     public bool CanCraft(RecipeData recipe)
     {
         foreach (var ing in recipe.ingredients)
@@ -26,9 +36,19 @@ public class CraftingSystem : MonoBehaviour
             playerInventory.RemoveItem(ing.item, ing.amount);
         }
 
-        //  результат
+        // Добавляем результат
         playerInventory.AddItem(recipe.result, recipe.resultAmount);
 
-        Debug.Log($"Скрафчен: {recipe.recipeName}");
+        Debug.Log($"[CraftingSystem] Скрафчен: {recipe.recipeName}");
+    }
+
+    public WeaponData GetWeaponDataForItem(ItemData item)
+    {
+        foreach (var wr in weaponResults)
+        {
+            if (wr.resultItem == item)
+                return wr.weaponData;
+        }
+        return null;
     }
 }

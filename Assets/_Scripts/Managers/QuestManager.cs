@@ -20,7 +20,7 @@ public class QuestManager : MonoBehaviour
 
     void Start()
     {
-        //подписываемся на события инвентаря!
+        // Подписываемся на события инвентаря
         Inventory inv = FindObjectOfType<Inventory>();
         if (inv != null)
         {
@@ -40,12 +40,17 @@ public class QuestManager : MonoBehaviour
         activeQuests.Add(quest);
         int[] progress = new int[quest.goals.Length];
         goalProgress[quest] = progress;
+
         Debug.Log($"[QuestManager] Квест начат: {quest.questName}");
+
+        // УБРАЛИ: CheckExistingProgress — стартовые ресурсы не засчитываются
     }
 
     // Событие от инвентаря
     public void OnItemCollected(ItemData item, int amount)
     {
+        Debug.Log($"[QuestManager] Получено событие: {item.itemName} x{amount}");
+
         foreach (var quest in activeQuests.ToList())
         {
             bool updated = false;
@@ -54,6 +59,7 @@ public class QuestManager : MonoBehaviour
                 var goal = quest.goals[i];
                 if (goal.type == QuestGoal.GoalType.CollectItem && goal.requiredItem == item)
                 {
+                    Debug.Log($"[QuestManager] Цель совпадает! Прогресс: {goalProgress[quest][i]}/{goal.requiredAmount}");
                     int[] prog = goalProgress[quest];
                     prog[i] = Mathf.Min(prog[i] + amount, goal.requiredAmount);
                     updated = true;
@@ -109,9 +115,7 @@ public class QuestManager : MonoBehaviour
             }
         }
 
-        
-
-        // Выдача опыта 
+        // Выдача опыта
         LevelSystem lvl = FindObjectOfType<LevelSystem>();
         if (lvl != null && quest.rewardExp > 0)
         {
@@ -124,7 +128,6 @@ public class QuestManager : MonoBehaviour
             TalentManager.Instance.availablePoints += quest.rewardTalentPoints;
             Debug.Log($"[QuestManager] Получено {quest.rewardTalentPoints} очк. талантов");
         }
-        
 
         Debug.Log($"[QuestManager] Квест выполнен: {quest.questName}");
     }
